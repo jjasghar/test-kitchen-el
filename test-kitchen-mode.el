@@ -24,6 +24,10 @@
 ;; Public License.
 
 ;;; Commentary:
+
+;; inspired from the following sites:
+;; http://blog.binchen.org/posts/open-readme-under-git-root-directory-in-emacs.html
+;; http://stackoverflow.com/questions/821853/splitting-window-in-emacs-lisp-function
 ;;
 ;; This minor mode allows you to run test-kitchen in a seporate buffer
 ;;
@@ -50,6 +54,52 @@
 
 
 ;;; Code:
+
+(defun locate-kitchen-yml ()
+  (interactive)
+  (let (filename
+        (root-dir (locate-dominating-file (file-name-as-directory (file-name-directory buffer-file-name)) ".git"))
+        )
+    ;; (message "root-dir=%s" root-dir)
+    (and root-dir (file-name-as-directory root-dir))
+    (setq filename (concat root-dir ".kitchen.yml"))
+    ;;    (if (not (file-exists-p filename))
+    ;;        (setq filename (concat root-dir ".kitchen.yml"))
+    ;;      )
+    ;; (message "filename=%s" filename)
+    (if (file-exists-p filename)
+        ;;        (call-interactively 'chef-kitchen-test))
+        (let (default-directory root-dir)
+          (shell-command "chef exec kitchen test"
+                       "*Messages*"
+                       (switch-to-buffer "*tk-run*")))
+
+;;        (switch-to-buffer (find-file-noselect filename nil nil))
+      (message ".kichen.yml found!"))
+    ))
+
+
+;; (defun locate-kitchen-yml ()
+;;   (interactive)
+;;   (when-let (default-directory (locate-dominating-file default-directory ".kitchen.yml"))
+;;     (call-interactively 'chef-kitchen-test)))
+
+(defun chef-kitchen-test ()
+  (interactive)
+  "Run chef exec kitchen test in a different buffer."
+  (shell-command
+    "chef exec kitchen test"
+       (buffer-file-name))
+  (display-buffer "*Shell Command Output*"))
+
+
+
+;;; keybindings don't worry about that now
+(add-hook 'ruby-mode-common-hook
+           (lambda ()
+         (define-key c-mode-base-map
+               "C-c ," 'chef-kitchen-test)))
+(global-set-key (kbd "C-c C-f") 'open-readme-in-git-root-directory)
 
 
 ;;; test-kitchen-mode.el ends here
