@@ -67,14 +67,14 @@
 (defcustom test-kitchen-verify-command "chef exec kitchen verify"
   "The command use to verify the kitchen")
 
-(defun locate-root-dir ()
+(defun test-kitchen-locate-root-dir ()
   "Return the full path of the directory where .kitchen.yml file was found, else nil."
   (locate-dominating-file (file-name-as-directory
                            (file-name-directory buffer-file-name))
                           ".kitchen.yml"))
 
 (defun test-kitchen-run (cmd)
-  (let ((root-dir (locate-root-dir)))
+  (let ((root-dir (test-kitchen-locate-root-dir)))
     (if root-dir
         (let ((setenv "LANG" "en_US.UTF-8") ;; ruby needs utf8
 	      (default-directory root-dir)
