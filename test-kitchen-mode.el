@@ -37,17 +37,16 @@
 ;; This minor mode allows you to run test-kitchen in a seporate buffer
 ;;
 ;;  * Run test-kitchen destroy in another buffer
-;;    (bound to `C-c C-d`)
-;;
 ;;  * Run test-kitchen list in another buffer
-;;    (bound to `C-c l`)
-;;
 ;;  * Run test-kitchen test in another buffer
-;;    (bound to `C-c C-t`)
-;;
 ;;  * Run test-kitchen verify in another buffer
-;;    (bound to `C-c C-v`)
 ;;
+;; You'll probably want to define some key bindings to run these.
+;;
+;;   (global-set-key (kbd "C-c C-d") 'chef-kitchen-destroy)
+;;   (global-set-key (kbd "C-c C-t") 'chef-kitchen-test)
+;;   (global-set-key (kbd "C-c l") 'chef-kitchen-list)
+;;   (global-set-key (kbd "C-c C-v") 'chef-kitchen-verify)
 
 ;; TODO:
 ;;
@@ -56,10 +55,17 @@
 
 ;;; Code:
 
-(defvar kitchen-destroy-command "chef exec kitchen destroy")
-(defvar kitchen-list-command "chef exec kitchen list")
-(defvar kitchen-test-command "chef exec kitchen test")
-(defvar kitchen-verify-command "chef exec kitchen verify")
+(defcustom kitchen-destroy-command "chef exec kitchen destroy"
+  "The command used to destroy a kitchen.")
+
+(defcustom kitchen-list-command "chef exec kitchen list"
+  "The command used to list the kitchen nodes.")
+
+(defcustom kitchen-test-command "chef exec kitchen test"
+  "The command used to run the tests.")
+
+(defcustom kitchen-verify-command "chef exec kitchen verify"
+  "The command use to verify the kitchen")
 
 (defun locate-root-dir ()
   "Return the full path of the directory where .kitchen.yml file was found, else nil."
@@ -67,55 +73,36 @@
                            (file-name-directory buffer-file-name))
                           ".kitchen.yml"))
 
-(defun chef-kitchen-destroy ()
-  "Run chef exec kitchen destroy in a different buffer."
-  (interactive)
+(defun chef-kitchen-run (cmd)
   (let ((root-dir (locate-root-dir)))
     (if root-dir
         (let ((default-directory root-dir)
               (out-buffer (get-buffer-create "*chef output*")))
-          (async-shell-command kitchen-destroy-command out-buffer)
+          (async-shell-command cmd out-buffer)
           (display-buffer out-buffer))
       (error "Couldn't locate .kitchen.yml!"))))
+
+(defun chef-kitchen-destroy ()
+  "Run chef exec kitchen destroy in a different buffer."
+  (interactive)
+  (chef-kitchen-run kitchen-destroy-command))
 
 (defun chef-kitchen-list ()
   "Run chef exec kitchen list in a different buffer."
   (interactive)
-  (let ((root-dir (locate-root-dir)))
-    (if root-dir
-        (let ((default-directory root-dir)
-              (out-buffer (get-buffer-create "*chef output*")))
-          (async-shell-command kitchen-list-command out-buffer)
-          (display-buffer out-buffer))
-      (error "Couldn't locate .kitchen.yml!"))))
+  (chef-kitchen-run kitchen-list-command))
 
 (defun chef-kitchen-test ()
   "Run chef exec kitchen test in a different buffer."
   (interactive)
-  (let ((root-dir (locate-root-dir)))
-    (if root-dir
-        (let ((default-directory root-dir)
-              (out-buffer (get-buffer-create "*chef output*")))
-          (async-shell-command kitchen-test-command out-buffer)
-          (display-buffer out-buffer))
-      (error "Couldn't locate .kitchen.yml!"))))
+  (chef-kitchen-run kitchen-test-command))
 
 (defun chef-kitchen-verify ()
   "Run chef exec kitchen verify in a different buffer."
   (interactive)
-  (let ((root-dir (locate-root-dir)))
-    (if root-dir
-        (let ((default-directory root-dir)
-              (out-buffer (get-buffer-create "*chef output*")))
-          (async-shell-command kitchen-verify-command out-buffer)
-          (display-buffer out-buffer))
-      (error "Couldn't locate .kitchen.yml!"))))
+  (chef-kitchen-run kitchen-verify-command))
 
 
-;;; some generic keybindings you'll probably want to change these
-(global-set-key (kbd "C-c C-d") 'chef-kitchen-destroy)
-(global-set-key (kbd "C-c C-t") 'chef-kitchen-test)
-(global-set-key (kbd "C-c l") 'chef-kitchen-list)
-(global-set-key (kbd "C-c C-v") 'chef-kitchen-verify)
 
+(provide 'test-kitchen-mode)
 ;;; test-kitchen-mode.el ends here
