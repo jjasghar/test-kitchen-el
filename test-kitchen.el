@@ -76,7 +76,8 @@
 (defun test-kitchen-run (cmd)
   (let ((root-dir (locate-root-dir)))
     (if root-dir
-        (let ((default-directory root-dir)
+        (let ((setenv "LANG" "en_US.UTF-8") ;; ruby needs utf8
+	      (default-directory root-dir)
               (out-buffer (get-buffer-create "*chef output*")))
           (async-shell-command cmd out-buffer)
           (display-buffer out-buffer))
