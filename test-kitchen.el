@@ -55,16 +55,16 @@
 
 ;;; Code:
 
-(defcustom kitchen-destroy-command "chef exec kitchen destroy"
+(defcustom test-kitchen-destroy-command "chef exec kitchen destroy"
   "The command used to destroy a kitchen.")
 
-(defcustom kitchen-list-command "chef exec kitchen list"
+(defcustom test-kitchen-list-command "chef exec kitchen list"
   "The command used to list the kitchen nodes.")
 
-(defcustom kitchen-test-command "chef exec kitchen test"
+(defcustom test-kitchen-test-command "chef exec kitchen test"
   "The command used to run the tests.")
 
-(defcustom kitchen-verify-command "chef exec kitchen verify"
+(defcustom test-kitchen-verify-command "chef exec kitchen verify"
   "The command use to verify the kitchen")
 
 (defun locate-root-dir ()
@@ -73,7 +73,7 @@
                            (file-name-directory buffer-file-name))
                           ".kitchen.yml"))
 
-(defun chef-kitchen-run (cmd)
+(defun test-kitchen-run (cmd)
   (let ((root-dir (locate-root-dir)))
     (if root-dir
         (let ((default-directory root-dir)
@@ -82,27 +82,26 @@
           (display-buffer out-buffer))
       (error "Couldn't locate .kitchen.yml!"))))
 
-(defun chef-kitchen-destroy ()
+(defun test-kitchen-destroy ()
   "Run chef exec kitchen destroy in a different buffer."
   (interactive)
-  (chef-kitchen-run kitchen-destroy-command))
+  (chef-kitchen-run test-kitchen-destroy-command))
 
-(defun chef-kitchen-list ()
+(defun test-kitchen-list ()
   "Run chef exec kitchen list in a different buffer."
   (interactive)
-  (chef-kitchen-run kitchen-list-command))
+  (chef-kitchen-run test-kitchen-list-command))
 
-(defun chef-kitchen-test ()
+(defun test-kitchen-test ()
   "Run chef exec kitchen test in a different buffer."
   (interactive)
-  (chef-kitchen-run kitchen-test-command))
+  (chef-kitchen-run test-kitchen-test-command))
 
-(defun chef-kitchen-verify ()
+(defun test-kitchen-verify ()
   "Run chef exec kitchen verify in a different buffer."
   (interactive)
-  (chef-kitchen-run kitchen-verify-command))
+  (chef-kitchen-run test-kitchen-verify-command))
 
 
-
-(provide 'test-kitchen-mode)
+(provide 'test-kitchen)
 ;;; test-kitchen-mode.el ends here
