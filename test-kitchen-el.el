@@ -80,21 +80,25 @@
           (display-buffer out-buffer))
       (error "Couldn't locate .kitchen.yml!"))))
 
+;;;###autoload
 (defun test-kitchen-destroy ()
   "Run chef exec kitchen destroy in a different buffer."
   (interactive)
   (test-kitchen-run test-kitchen-destroy-command))
 
+;;;###autoload
 (defun test-kitchen-list ()
   "Run chef exec kitchen list in a different buffer."
   (interactive)
   (test-kitchen-run test-kitchen-list-command))
 
+;;;###autoload
 (defun test-kitchen-test ()
   "Run chef exec kitchen test in a different buffer."
   (interactive)
   (test-kitchen-run test-kitchen-test-command))
 
+;;;###autoload
 (defun test-kitchen-verify ()
   "Run chef exec kitchen verify in a different buffer."
   (interactive)
