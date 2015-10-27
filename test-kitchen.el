@@ -104,4 +104,4 @@
 
 
 (provide 'test-kitchen)
-;;; test-kitchen-el.el ends here
+;;; test-kitchen.el ends here
