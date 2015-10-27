@@ -4,7 +4,7 @@
 ;; Author: JJ Asghar
 ;; URL: http://github.com/jjasghar/test-kitchen-el
 ;; Created: 2015
-;; Version: 0.1.1
+;; Version: 0.2.0
 ;; Keywords: chef ruby test-kitchen
 ;; Package-Requires:
 ;;    chefdk [https://downloads.chef.io/chef-dk/]
