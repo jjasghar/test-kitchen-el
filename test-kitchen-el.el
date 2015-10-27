@@ -1,4 +1,4 @@
-;;; test-kichen-mode.el -- Run test-kitchen inside of emacs
+;;; test-kichen-el.el -- Run test-kitchen inside of emacs
 
 ;; Copyright (C) 2015 JJ Asghar <http://jjasghar.github.io>
 ;; Author: JJ Asghar
