@@ -1,4 +1,4 @@
-* test-kitchen-el.el -- Run test-kitchen inside of emacs
+* test-kitchen.el -- Run test-kitchen inside of emacs
 
 ** Overview
 
