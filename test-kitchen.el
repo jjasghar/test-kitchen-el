@@ -1,4 +1,4 @@
-;;; test-kitchen-el.el --- Run test-kitchen inside of emacs
+;;; test-kitchen.el --- Run test-kitchen inside of emacs
 
 ;; Copyright (C) 2015 JJ Asghar <http://jjasghar.github.io>
 ;; Author: JJ Asghar
@@ -6,8 +6,6 @@
 ;; Created: 2015
 ;; Version: 0.2.0
 ;; Keywords: chef ruby test-kitchen
-;; Package-Requires:
-;;    chefdk [https://downloads.chef.io/chef-dk/]
 
 ;; This file is NOT part of GNU Emacs.
 ;;
