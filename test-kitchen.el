@@ -4,7 +4,7 @@
 ;; Author: JJ Asghar
 ;; URL: http://github.com/jjasghar/test-kitchen-mode
 ;; Created: 2015
-;; Version: 0.1.0
+;; Version: 0.1.1
 ;; Keywords: chef ruby test-kitchen
 ;; Package-Requires:
 ;;    chefdk [https://downloads.chef.io/chef-dk/]
@@ -26,13 +26,11 @@
 
 ;;; Commentary:
 
-;; inspired from the following sites:
-;; http://blog.binchen.org/posts/open-readme-under-git-root-directory-in-emacs.html
-;; http://stackoverflow.com/questions/821853/splitting-window-in-emacs-lisp-function
+;; This minor mode also assumes you have [[https://downloads.chef.io/chef-dk/][ChefDK]] installed.
 ;;
-;; I'd like to thank [Cameron Desautels](https://twitter.com/camdez) for the
-;; jump start on this project. /me tips my hat to you sir.
+;; I'd like to thank [[https://twitter.com/camdez][Cameron Desautels]] for the jump start on this project. /me tips my hat to you sir.
 ;;
+;; I'd also like to thank [[http://twitter.com/ionrock][Eric Larson]] for pushing me to keep this alive.
 ;;
 ;; This minor mode allows you to run test-kitchen in a seporate buffer
 ;;
@@ -86,22 +84,22 @@
 (defun test-kitchen-destroy ()
   "Run chef exec kitchen destroy in a different buffer."
   (interactive)
-  (chef-kitchen-run test-kitchen-destroy-command))
+  (test-kitchen-run test-kitchen-destroy-command))
 
 (defun test-kitchen-list ()
   "Run chef exec kitchen list in a different buffer."
   (interactive)
-  (chef-kitchen-run test-kitchen-list-command))
+  (test-kitchen-run test-kitchen-list-command))
 
 (defun test-kitchen-test ()
   "Run chef exec kitchen test in a different buffer."
   (interactive)
-  (chef-kitchen-run test-kitchen-test-command))
+  (test-kitchen-run test-kitchen-test-command))
 
 (defun test-kitchen-verify ()
   "Run chef exec kitchen verify in a different buffer."
   (interactive)
-  (chef-kitchen-run test-kitchen-verify-command))
+  (test-kitchen-run test-kitchen-verify-command))
 
 
 (provide 'test-kitchen)
