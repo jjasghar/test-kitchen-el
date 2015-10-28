@@ -2,10 +2,10 @@
 
 ** Overview
 
-This plugins allows you to run your test-kitchen run inside of Emacs.
+This plugin allows you to run your test-kitchen run inside of Emacs.
 No need to shell out or tab out to run `kitchen` commands.
 
-This plugin  also assumes you have [[https://downloads.chef.io/chef-dk/][ChefDK]] installed.
+This plugin also assumes you have [[https://downloads.chef.io/chef-dk/][ChefDK]] installed.
 
 I'd like to thank [[https://twitter.com/camdez][Cameron Desautels]] for the jump start on this project. /me tips my hat to you sir.
 
