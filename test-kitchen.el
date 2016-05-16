@@ -101,7 +101,7 @@
 
 ;;;###autoload
 (defun test-kitchen-converge ()
-  "Run chef exec kitchen test in a different buffer."
+  "Run chef exec kitchen converge in a different buffer."
   (interactive)
   (test-kitchen-run test-kitchen-converge-command))
 
