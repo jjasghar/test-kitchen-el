@@ -4,7 +4,7 @@
 ;; Author: JJ Asghar
 ;; URL: http://github.com/jjasghar/test-kitchen-el
 ;; Created: 2015
-;; Version: 0.2.1
+;; Version: 0.3.0
 ;; Keywords: chef ruby test-kitchen
 
 ;; This file is NOT part of GNU Emacs.
@@ -42,7 +42,8 @@
 ;;   (global-set-key (kbd "C-c C-d") 'test-kitchen-destroy)
 ;;   (global-set-key (kbd "C-c C-t") 'test-kitchen-test)
 ;;   (global-set-key (kbd "C-c l") 'test-kitchen-list)
-;;   (global-set-key (kbd "C-c C-v") 'test-kitchen-verify)
+;;   (global-set-key (kbd "C-c C-kv") 'test-kitchen-verify)
+;;   (global-set-key (kbd "C-c C-kc") 'test-kitchen-converge)
 
 ;; TODO:
 ;;
