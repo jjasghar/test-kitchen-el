@@ -75,10 +75,8 @@
 (defun test-kitchen-run (cmd)
   (let ((root-dir (test-kitchen-locate-root-dir)))
     (if root-dir
-        (let ((default-directory root-dir)
-              (out-buffer (get-buffer-create "*chef output*")))
-          (async-shell-command cmd out-buffer)
-          (display-buffer out-buffer))
+        (let ((default-directory root-dir))
+          (compile cmd))
       (error "Couldn't locate .kitchen.yml!"))))
 
 ;;;###autoload
