@@ -72,6 +72,16 @@
                            (file-name-directory buffer-file-name))
                           ".kitchen.yml"))
 
+;;; test kitchen is very likes colors, so colorize compilation buffer
+(require 'ansi-color)
+
+(defun colorize-compilation-buffer ()
+  (toggle-read-only)
+  (ansi-color-apply-on-region compilation-filter-start (point))
+  (toggle-read-only))
+
+(add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+
 (defun test-kitchen-run (cmd)
   (let ((root-dir (test-kitchen-locate-root-dir)))
     (if root-dir
