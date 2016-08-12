@@ -75,18 +75,21 @@
 ;;; test kitchen is very likes colors, so colorize compilation buffer
 (require 'ansi-color)
 
-(defun colorize-compilation-buffer ()
+(defun test-kitchen-colorize-compilation-buffer ()
   (toggle-read-only)
   (ansi-color-apply-on-region compilation-filter-start (point))
   (toggle-read-only))
 
-(add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+;; define test kitchen compilation mode
+(define-compilation-mode test-kitchen-compilation-mode "Test Kitchen compilation"
+  "Compilation mode for RSpec output."
+  (add-hook 'compilation-filter-hook 'test-kitchen-colorize-compilation-buffer nil t))
 
 (defun test-kitchen-run (cmd)
   (let ((root-dir (test-kitchen-locate-root-dir)))
     (if root-dir
         (let ((default-directory root-dir))
-          (compile cmd))
+          (compile cmd 'test-kitchen-compilation-mode))
       (error "Couldn't locate .kitchen.yml!"))))
 
 ;;;###autoload
