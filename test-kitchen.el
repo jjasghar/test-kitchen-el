@@ -111,7 +111,12 @@
   (test-kitchen-run test-kitchen-test-command))
 
 ;;;###autoload
-(defun test-kitchen-converge ()
+(defun test-kitchen-converge (instance)
+  "Run chef exec kitchen converge selected VM in a different buffer."
+  (interactive "sKitchen instance to converge: ")
+  (test-kitchen-run (concat test-kitchen-converge-command " " instance)))
+
+(defun test-kitchen-converge-all ()
   "Run chef exec kitchen converge in a different buffer."
   (interactive)
   (test-kitchen-run test-kitchen-converge-command))
@@ -121,7 +126,6 @@
   "Run chef exec kitchen verify in a different buffer."
   (interactive)
   (test-kitchen-run test-kitchen-verify-command))
-
 
 (provide 'test-kitchen)
 ;;; test-kitchen.el ends here
