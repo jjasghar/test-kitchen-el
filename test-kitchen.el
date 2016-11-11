@@ -93,7 +93,13 @@
       (error "Couldn't locate .kitchen.yml!"))))
 
 ;;;###autoload
-(defun test-kitchen-destroy ()
+(defun test-kitchen-destroy (instance)
+  "Run chef exec kitchen destroy in a different buffer."
+  (interactive "sKitchen instance to destroy: ")
+  (test-kitchen-run (concat test-kitchen-destroy-command " " instance)))
+
+;;;###autoload
+(defun test-kitchen-destroy-all ()
   "Run chef exec kitchen destroy in a different buffer."
   (interactive)
   (test-kitchen-run test-kitchen-destroy-command))
@@ -105,7 +111,13 @@
   (test-kitchen-run test-kitchen-list-command))
 
 ;;;###autoload
-(defun test-kitchen-test ()
+(defun test-kitchen-test (instance)
+  "Run chef exec kitchen test in a different buffer."
+  (interactive "sKitchen instance to perform test: ")
+  (test-kitchen-run (concat test-kitchen-test-command " " instance)))
+
+;;;###autoload
+(defun test-kitchen-test-all ()
   "Run chef exec kitchen test in a different buffer."
   (interactive)
   (test-kitchen-run test-kitchen-test-command))
@@ -125,7 +137,7 @@
 ;;;###autoload
 (defun test-kitchen-verify (instance)
   "Run chef exec kitchen verify in a different buffer."
-  (interactive "sKitchen instance to converge: ")
+  (interactive "sKitchen instance to verify: ")
   (test-kitchen-run (concat test-kitchen-verify-command " " instance)))
 
 ;;;###autoload
