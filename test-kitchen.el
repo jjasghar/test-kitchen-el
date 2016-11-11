@@ -116,13 +116,20 @@
   (interactive "sKitchen instance to converge: ")
   (test-kitchen-run (concat test-kitchen-converge-command " " instance)))
 
+;;;###autoload
 (defun test-kitchen-converge-all ()
   "Run chef exec kitchen converge in a different buffer."
   (interactive)
   (test-kitchen-run test-kitchen-converge-command))
 
 ;;;###autoload
-(defun test-kitchen-verify ()
+(defun test-kitchen-verify (instance)
+  "Run chef exec kitchen verify in a different buffer."
+  (interactive "sKitchen instance to converge: ")
+  (test-kitchen-run (concat test-kitchen-verify-command " " instance)))
+
+;;;###autoload
+(defun test-kitchen-verify-all ()
   "Run chef exec kitchen verify in a different buffer."
   (interactive)
   (test-kitchen-run test-kitchen-verify-command))
