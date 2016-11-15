@@ -73,45 +73,105 @@
                            (file-name-directory buffer-file-name))
                           ".kitchen.yml"))
 
+;;; test kitchen is very likes colors, so colorize compilation buffer
+(require 'ansi-color)
+
+(defadvice display-message-or-buffer (before ansi-color activate)
+  "Process ANSI color codes in shell output."
+  (let ((buf (ad-get-arg 0)))
+    (and (bufferp buf)
+	 (string-match "^\\*kitchen.*\\*" (buffer-name buf))
+	 (with-current-buffer buf
+	              (ansi-color-apply-on-region (point-min) (point-max))))))
+
+(defun test-kitchen-colorize-compilation-buffer ()
+  (toggle-read-only)
+  (ansi-color-apply-on-region compilation-filter-start (point))
+  (toggle-read-only))
+
+;; define test kitchen compilation mode
+(define-compilation-mode test-kitchen-compilation-mode "Test Kitchen compilation"
+  "Compilation mode for RSpec output."
+  (add-hook 'compilation-filter-hook 'test-kitchen-colorize-compilation-buffer nil t))
+
 (defun test-kitchen-run (cmd)
   (let ((root-dir (test-kitchen-locate-root-dir)))
     (if root-dir
-        (let ((default-directory root-dir)
-              (out-buffer (get-buffer-create "*chef output*")))
-          (async-shell-command cmd out-buffer)
-          (display-buffer out-buffer))
+        (let ((default-directory root-dir))
+          (compile cmd 'test-kitchen-compilation-mode))
+      (error "Couldn't locate .kitchen.yml!"))))
+
+(defun test-kitchen-run-to-string (cmd)
+  (let ((root-dir (test-kitchen-locate-root-dir)))
+    (if root-dir
+        (let ((default-directory root-dir))
+          (shell-command-to-string cmd))
       (error "Couldn't locate .kitchen.yml!"))))
 
 ;;;###autoload
-(defun test-kitchen-destroy ()
+(defun test-kitchen-destroy (instance)
+  "Run chef exec kitchen destroy in a different buffer."
+  (interactive (list (completing-read "Kitchen instance to destroy: " (split-string (test-kitchen-list-bare)))))
+  (test-kitchen-run (concat test-kitchen-destroy-command " " instance)))
+
+;;;###autoload
+(defun test-kitchen-destroy-all ()
   "Run chef exec kitchen destroy in a different buffer."
   (interactive)
   (test-kitchen-run test-kitchen-destroy-command))
+
+(defun test-kitchen-list-update-cache ()
+  (test-kitchen-run-to-string
+   (concat "DIR=$(echo $PWD | sed \'s/\\\//_/g\'); [[ .kitchen.yml -nt /tmp/${DIR}_kitchen.list.yml || .kitchen.local.yml -nt /tmp/${DIR}_kitchen.list.yml ]] && " test-kitchen-list-command " -b >/tmp/${DIR}_kitchen.list.yml 2>/dev/null")))
+
+;;;###autoload
+(defun test-kitchen-list-bare ()
+  "Run chef exec kitchen list in a different buffer."
+  (test-kitchen-list-update-cache)
+  (test-kitchen-run-to-string "DIR=$(echo $PWD | sed \'s/\\\//_/g\'); cat /tmp/${DIR}_kitchen.list.yml"))
 
 ;;;###autoload
 (defun test-kitchen-list ()
   "Run chef exec kitchen list in a different buffer."
   (interactive)
-  (test-kitchen-run test-kitchen-list-command))
+  (with-output-to-temp-buffer "*kitchen-list*"
+    (princ (test-kitchen-run-to-string (concat test-kitchen-list-command " --color 2>/dev/null")))))
 
 ;;;###autoload
-(defun test-kitchen-test ()
+(defun test-kitchen-test (instance)
+  "Run chef exec kitchen test in a different buffer."
+  (interactive (list (completing-read "Kitchen instance to perform test: " (split-string (test-kitchen-list-bare)))))
+  (test-kitchen-run (concat test-kitchen-test-command " " instance)))
+
+;;;###autoload
+(defun test-kitchen-test-all ()
   "Run chef exec kitchen test in a different buffer."
   (interactive)
   (test-kitchen-run test-kitchen-test-command))
 
 ;;;###autoload
-(defun test-kitchen-converge ()
+(defun test-kitchen-converge (instance)
+  "Run chef exec kitchen converge selected VM in a different buffer."
+  (interactive (list (completing-read "Kitchen instance to converge: " (split-string (test-kitchen-list-bare)))))
+  (test-kitchen-run (concat test-kitchen-converge-command " " instance)))
+
+;;;###autoload
+(defun test-kitchen-converge-all ()
   "Run chef exec kitchen converge in a different buffer."
   (interactive)
   (test-kitchen-run test-kitchen-converge-command))
 
 ;;;###autoload
-(defun test-kitchen-verify ()
+(defun test-kitchen-verify (instance)
+  "Run chef exec kitchen verify in a different buffer."
+  (interactive (list (completing-read "Kitchen instance to verify: " (split-string (test-kitchen-list-bare)))))
+  (test-kitchen-run (concat test-kitchen-verify-command " " instance)))
+
+;;;###autoload
+(defun test-kitchen-verify-all ()
   "Run chef exec kitchen verify in a different buffer."
   (interactive)
   (test-kitchen-run test-kitchen-verify-command))
-
 
 (provide 'test-kitchen)
 ;;; test-kitchen.el ends here
