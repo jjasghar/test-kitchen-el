@@ -1,5 +1,8 @@
 * CHANGELOG
 
+** 0.4.0 <2017-11-29>
+- [[https://github.com/cosmonaut-ok][Cosmonaut-ok]] created PR [[https://github.com/jjasghar/test-kitchen-el/pull/11][#11]]
+
 ** 0.3.0 <2015-05-16>
 - [[https://github.com/cosmonaut-ok][Cosmonaut-ok]] created PR [[https://github.com/jjasghar/test-kitchen-el/pull/8][#8]] to fix some typos and the =converge= option
 - Updated the README with the new option
